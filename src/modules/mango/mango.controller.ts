@@ -3,23 +3,7 @@ import Mango from "./mango.model";
 import { MangoServices } from "./mango.service";
 import { catchAsync } from "../../utils/catchAsync";
 
-// const createMango = async (req: Request, res: Response) => {
-//   try {
-//     const data = await MangoServices.createMangoIntoDB(req.body)
 
-//     res.send({
-//       success: true,
-//       message: "Mango Created Successfully",
-//       data,
-//     });
-//   } catch (error) {
-//     res.send({
-//       success: false,
-//       message: "Error Hppend",
-//       error,
-//     });
-//   }
-// };
 
 const createMango = catchAsync(async (req: Request, res: Response) => {
   const data = await MangoServices.createMangoIntoDB(req.body);
@@ -32,7 +16,7 @@ const createMango = catchAsync(async (req: Request, res: Response) => {
 
 const getMangos = catchAsync(async (req: Request, res: Response) => {
   const data = await Mango.find();
-  
+
   res.send({
     success: true,
     message: "Mango getting Successfully",
