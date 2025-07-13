@@ -2,12 +2,14 @@ import { Request, Response } from "express";
 import Mango from "./mango.model";
 import { MangoServices } from "./mango.service";
 import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
 
 
 const createMango = catchAsync(async (req: Request, res: Response) => {
   const data = await MangoServices.createMangoIntoDB(req.body);
-  res.send({
+  sendResponse(res, {
+    statusCode: 201,
     success: true,
     message: "Mango Created Successfully",
     data,
@@ -17,7 +19,8 @@ const createMango = catchAsync(async (req: Request, res: Response) => {
 const getMangos = catchAsync(async (req: Request, res: Response) => {
   const data = await Mango.find();
 
-  res.send({
+  sendResponse(res, {
+    statusCode: 200,
     success: true,
     message: "Mango getting Successfully",
     data,

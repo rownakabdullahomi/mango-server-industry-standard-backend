@@ -13,6 +13,7 @@ const createMangoIntoDB = async (payload: IMango) => {
 };
 
  const getMangoByIdFromDB = async(payload: string)=>{
+  // throw new Error("fake error");
     const data = await Mango.findById(payload);
     return data;
  }
