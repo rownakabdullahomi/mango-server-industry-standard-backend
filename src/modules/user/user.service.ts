@@ -1,8 +1,10 @@
-import { email } from "zod";
+
 import { IUser } from "./user.interface";
 import User from "./user.model";
 import * as bcrypt from "bcryptjs";
 import AppError from "../../error/appError";
+import jwt from "jsonwebtoken"
+
 
 const registerUser = async (payload: IUser) => {
   payload.password = await bcrypt.hash(payload.password, 10);
@@ -12,6 +14,7 @@ const registerUser = async (payload: IUser) => {
   const data = await user.save();
   return data;
 };
+
 const loginUser = async (payload: IUser) => {
   const isUserExist = await User.findOne({ email: payload.email });
 
@@ -21,7 +24,17 @@ const loginUser = async (payload: IUser) => {
 
   if(!checkPassword) throw new AppError(403, "Password not matched");
 
-  return isUserExist;
+  const jwtPayload = {
+    email: isUserExist.email,
+    role: isUserExist.role,
+  }
+  const accessToken = jwt.sign(
+    jwtPayload,
+    "Very Secret",
+    {expiresIn: "7d"}
+  )
+
+  return accessToken;
 };
 
 export const userService = {
