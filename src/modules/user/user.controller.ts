@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "./user.model";
 import { userService } from "./user.service";
+import config from "../../config";
 
 const registerUser = async (req: Request, res: Response) => {
   const payload = req.body;
@@ -17,6 +18,26 @@ const loginUser = async (req: Request, res: Response) => {
   const payload = req.body;
 
   const data = await userService.loginUser(payload);
+
+  res.cookie("accessToken", data.accessToken, {
+    secure: config.node_env !== "development",
+    httpOnly: true,
+  })
+  res.cookie("refreshToken", data.refreshToken, {
+    secure: config.node_env !== "development",
+    httpOnly: true,
+  })
+
+  res.send({
+    success: true,
+    message: "User Login Successfully",
+    data,
+  });
+};
+const refreshToken = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  const data = await userService.refreshToken(refreshToken);
 
   res.send({
     success: true,
@@ -35,4 +56,4 @@ const getUsers = async (req: Request, res: Response) => {
   });
 };
 
-export { registerUser, getUsers, loginUser };
+export { registerUser, getUsers, loginUser, refreshToken };

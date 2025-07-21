@@ -1,3 +1,4 @@
+import config from "../../config";
 import AppError from "../../error/appError";
 import User from "../user/user.model";
 import * as bcrypt from "bcryptjs";
@@ -14,7 +15,7 @@ const changePassword = async (
   const isMatchedPassword = await bcrypt.compare(oldPassword, storedPassword);
   if (!isMatchedPassword) throw new AppError(403, "Password not matched");
 
-  isUserExist.password = await bcrypt.hash(newPassword, 10);
+  isUserExist.password = await bcrypt.hash(newPassword, config.password_salt_round!);
   await isUserExist.save();
   return isUserExist;
 };
@@ -31,7 +32,7 @@ const resetPassword = async (
 
   if (!checkPhoneNumber) throw new AppError(403, "Wrong phone number");
 
-  isUserExist.password = await bcrypt.hash(password, 10);
+  isUserExist.password = await bcrypt.hash(password, config.password_salt_round!);
   await isUserExist.save();
 
     const { password: _password, ...rest } = isUserExist.toObject();

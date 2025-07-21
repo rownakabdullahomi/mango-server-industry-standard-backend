@@ -32,6 +32,7 @@ const resetPassword = catchAsync(async(req:Request, res:Response)=>{
 })
 
 
+
 export const authController = {
     changePassword,
     resetPassword
