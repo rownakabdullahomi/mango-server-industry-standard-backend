@@ -12,6 +12,8 @@ authRouter.post(
 );
 
 
-authRouter.post("/reset-password", authController.resetPassword)
+
+authRouter.post("/reset-password", authController.resetPassword);
+authRouter.post("/logout", authController.logout);
 
 export default authRouter;

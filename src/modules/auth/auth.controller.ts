@@ -31,9 +31,20 @@ const resetPassword = catchAsync(async(req:Request, res:Response)=>{
       });
 })
 
+const logout = catchAsync(async(req, res)=>{
+await res.clearCookie("accessToken");
+await res.clearCookie("refreshToken");
 
+sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Logout successfully",
+        data: "",
+      });
+})
 
 export const authController = {
     changePassword,
-    resetPassword
+    resetPassword, 
+    logout
 }

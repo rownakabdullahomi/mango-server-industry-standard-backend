@@ -22,6 +22,7 @@ const loginUser = async (req: Request, res: Response) => {
   res.cookie("accessToken", data.accessToken, {
     secure: config.node_env !== "development",
     httpOnly: true,
+    //. sameSite: "lax",
   })
   res.cookie("refreshToken", data.refreshToken, {
     secure: config.node_env !== "development",
